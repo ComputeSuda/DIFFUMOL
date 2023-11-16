@@ -1,0 +1,16 @@
+bert_score
+blobfile
+nltk
+numpy
+pytroch
+packaging
+psutil
+PyYAML
+setuptools
+spacy
+torchmetrics
+tqdm
+transformers
+wandb
+datasets
+rdkit
