@@ -149,15 +149,14 @@ def main():
     start_t = time.time()
 
     model_base_name = os.path.basename(os.path.split(args.model_path)[0]) + f'.{os.path.split(args.model_path)[1]}'
-    out_dir = os.path.join(args.out_dir, f"{model_base_name.split('.ema')[0]}")
+    out_dir = args.out_dir
     if not os.path.isdir(out_dir):
         os.mkdir(out_dir)
 
-    out_path = os.path.join(out_dir, f"ema{model_base_name.split('.ema')[1]}.samples")
+    out_path = os.path.join(out_dir, f"{model_base_name.split('.')[0]}")
     if not os.path.isdir(out_path):
         os.mkdir(out_path)
-    csv_path=os.path.join(out_path, f"seed{args.seed2}_step{args.clamp_step}_{prop1}_{prop2}.csv")
-    out_path = os.path.join(out_path, f"seed{args.seed2}_step{args.clamp_step}_{prop1}_{prop2}.json")
+    csv_path=os.path.join(out_path, f"molecules_{prop1}_{prop2}.csv")
 
     all_test_data = []
 
@@ -263,13 +262,6 @@ def main():
         
         smiles+=word_lst_recover
         
-        for i in range(world_size):
-            if i == rank:  
-                fout = open(out_path, 'a')
-                for recov in word_lst_recover:
-                    print(json.dumps({"recover": recov}), file=fout)
-                fout.close()
-            dist.barrier()
             
     print('### Total takes {:.2f}s .....'.format(time.time() - start_t))
     print(f'### Written the decoded output to {out_path}')        
